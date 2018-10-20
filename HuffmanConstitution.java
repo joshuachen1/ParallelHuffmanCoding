@@ -70,7 +70,13 @@ public class HuffmanConstitution {
         if (currentNode instanceof CharNode) {
             hm.put(((CharNode) currentNode).character, compressedStr.toString());
 
-            System.out.printf("%5c \t %5d \t %15s\n", ((CharNode) currentNode).character, ((CharNode) currentNode).freq, compressedStr.toString());
+            // Display the Character, Frequency in Original text, and new Binary String to encode the character
+            if (((CharNode) currentNode).character == '\n') {
+                System.out.printf("%5s \t %5d \t %15s\n", "\\n", ((CharNode) currentNode).freq, compressedStr.toString());
+            }
+            else {
+                System.out.printf("%5c \t %5d \t %15s\n", ((CharNode) currentNode).character, ((CharNode) currentNode).freq, compressedStr.toString());
+            }
         }
         else if (currentNode != null) {
             // Traverse left of currentNode
