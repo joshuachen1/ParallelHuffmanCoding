@@ -1,6 +1,8 @@
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.PriorityQueue;
 
 /**
@@ -43,8 +45,49 @@ public class HuffmanConstitution {
             huffTree.offer(new FreqNode(fNode1, fNode2));
         }
 
-        System.out.println();
+        HashMap<Character, String> compressedChar = new HashMap<>();
 
-        
+        generateCompressedChar(compressedChar, new StringBuffer(), huffTree.peek());
+
+        FileOutputStream compressedConstitution = new FileOutputStream("/Users/student/IdeaProjects/Huffman/src/CompressedConstitution.txt");
+
+        StringBuffer encodeConst = new StringBuffer();
+        for (int i = 0; i < constitution.length(); i++) {
+            encodeConst.append(compressedChar.get(constitution.charAt(i)));
+        }
+
+        compressedConstitution.write(encodeConst.toString().getBytes());
+        compressedConstitution.close();
+
+        System.out.println("Original Size contains " + constitution.length() + " bytes.");
+        System.out.println("Compressed Size contains " + encodeConst.toString().length() / 8.0 + " bytes.");
+        System.out.printf("Original Compressed by %.2f%%.", 100 -(encodeConst.toString().length() / 8.0) / constitution.length() * 100);
+    }
+
+    // Recursively determine the compressed binary string of each character in the tree
+    // String buffers are thread safe
+    public static void generateCompressedChar(HashMap<Character, String> hm, StringBuffer compressedStr, FreqNode currentNode) {
+        if (currentNode instanceof CharNode) {
+            hm.put(((CharNode) currentNode).character, compressedStr.toString());
+
+            System.out.printf("%5c \t %5d \t %15s\n", ((CharNode) currentNode).character, ((CharNode) currentNode).freq, compressedStr.toString());
+        }
+        else if (currentNode != null) {
+            // Traverse left of currentNode
+            compressedStr.append('0');
+            generateCompressedChar(hm, compressedStr, currentNode.left);
+
+            // Delete the char that was added further down the tree
+            // Going down another branch of the tree
+            compressedStr.deleteCharAt(compressedStr.length() - 1);
+
+            // Traverse right of currentNOde
+            compressedStr.append('1');
+            generateCompressedChar(hm, compressedStr, currentNode.right);
+
+            // Delete the char that was added further down the tree
+            // Going down another branch of the tree
+            compressedStr.deleteCharAt(compressedStr.length() - 1);
+        }
     }
 }
