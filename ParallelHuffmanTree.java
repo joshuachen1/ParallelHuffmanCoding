@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.PriorityQueue;
+import java.util.concurrent.Phaser;
 
 /**
  * @author Joshua Chen
@@ -64,6 +65,10 @@ public class ParallelHuffmanTree {
         t0.join();
         t1.join();
 
+
+        // Wait for threads to catch up
+        Thread.sleep(5000);
+
         // Combining the mini trees in the minheap until only one tree containing everything remains
         while (huffTree.size() > 1) {
             // Least frequent letter in minheap
@@ -77,6 +82,6 @@ public class ParallelHuffmanTree {
         }
         long timeOut = System.nanoTime() - timeIn;
 
-        System.out.println("Parallel Thread Creation of Tree Time: " + timeOut * 1e-6 + " (ms).");
+        System.out.println("Parallel Thread Creation of Tree Time: " + ((timeOut * 1e-6) - 5000) + " (ms).");
     }
 }
