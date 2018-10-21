@@ -163,7 +163,7 @@ public class ParallelHuffmanConstitution {
                 for (int i = 0; i < str.length(); i++) {
                     encodedStr.append(hm.get(str.charAt(i)));
                 }
-                p.arriveAndAwaitAdvance();
+                p.arrive();
             }
         }).start();
     }
