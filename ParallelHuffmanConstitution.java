@@ -74,13 +74,6 @@ public class ParallelHuffmanConstitution {
             charFreq[c] += 1;
         }
 
-        // Make each letter its own mini tree sorted with the head of the minheap as the lowest frequency
-        for (int i = 0; i < charFreq.length; i++) {
-            if (charFreq[i] > 0) {
-                huffTree.offer(new CharNode(charFreq[i], (char) i));
-            }
-        }
-
         Thread t0 = new Thread(new Runnable() {
             @Override
             public void run() {
