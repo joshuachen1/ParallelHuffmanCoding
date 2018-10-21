@@ -26,10 +26,10 @@ public class HuffmanConstitution {
 
         HashMap<Character, String> compressedChar = new HashMap<>();
 
-        timeIn = System.nanoTime();
 
         FileOutputStream compressedConstitution = new FileOutputStream("/Users/student/IdeaProjects/Huffman/src/CompressedConstitution.txt");
 
+        timeIn = System.nanoTime();
         generateCompressedChar(compressedChar, new StringBuffer(), huffTree.peek());
 
         StringBuffer encodeConst = new StringBuffer();
