@@ -31,9 +31,9 @@ public class ParallelHuffmanEncoding {
 
         // Parallel Huffman Encoding begins
         long timeIn = System.nanoTime();
-        Phaser p = new Phaser();
-
         int numThreads = 3;
+        Phaser p = new Phaser(numThreads);
+
         StringBuffer[] encodedStr = new StringBuffer[numThreads];
 
         for (int i = 0, j = 0, k = constitution.length() / numThreads; i < encodedStr.length; i++, j += k) {
@@ -128,7 +128,6 @@ public class ParallelHuffmanEncoding {
     }
 
     private void compressString(Phaser p, HashMap<Character, String> hm, StringBuffer encodedStr, String str) {
-        p.register();
 
         new Thread(new Runnable() {
             @Override
@@ -136,6 +135,7 @@ public class ParallelHuffmanEncoding {
                 for (int i = 0; i < str.length(); i++) {
                     encodedStr.append(hm.get(str.charAt(i)));
                 }
+                p.arriveAndAwaitAdvance();
             }
         }).start();
     }
